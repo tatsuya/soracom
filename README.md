@@ -110,7 +110,7 @@ If authenticating with credentials, `obj` should look like:
 new Soracom({ apiKey: 'api_key', token: 'very_long_string_token' });
 ```
 
-### `soracom.default(obj);`
+### `soracom.defaults(obj);`
 
 Set given object properties to either default http headers or default request path, query or request body.
 
