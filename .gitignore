@@ -1,0 +1,6 @@
+## node
+*.log
+node_modules
+
+## soracom
+test/*.json
