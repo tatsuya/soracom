@@ -63,7 +63,7 @@ soracom.get('/operators/:operatorId', function(err, res, body) {});
 Create operator.
 
 ```js
-soracom.post('/operators', { email: 'email', password: 'password' }, function(err, res, body) {});
+soracom.post('/operators', function(err, res, body) {});
 ```
 
 ### Subscriber
@@ -129,7 +129,7 @@ GET any of the REST API endpints.
 
 #### `path`
 
-The endpoint to hit. When path contains special tag starts with `:`, then that tag should be treated as variable. If there is property with same name as that variable existed in the given param, then the tag is replaces with that value.
+The endpoint to hit. When path contains special tag starts with `:`, then that tag should be treated as variable. If there is property with same name as that variable existed in the given param, then the tag is replaced with that value.
 
 Example 1:
 
@@ -142,6 +142,7 @@ soracom.get('/operators/:operatorId', callback);
 Example 2:
 
 ```js
+var soracom = new Soracom({ apiKey: 'api_key', token: 'token' });
 soracom.get('/subscriber/:imsi', { imsi: '123456789012345' }, callback);
 // The imsi is exracted from given params in a same function call, so the endpoint will be "/subscribers/123456789012345"
 ```
