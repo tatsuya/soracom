@@ -3,16 +3,10 @@
 var assert = require('assert');
 var Soracom = require('../lib/soracom');
 
-var EMAIL = 'PUT_YOUR_EMAIL_HERE';
-var PASSWORD = 'PUT_YOUR_PASSWORD_HERE';
+var account = require('./account');
 var IMSI = "PUT_YOUR_IMSI_HERE";
 
 describe.skip('e2e', function() {
-  var account = {
-    email: EMAIL,
-    password: PASSWORD
-  };
-
   var checkResponseSuccess = function(done) {
     return function(err, res, body) {
       assert.equal(err, null);

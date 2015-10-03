@@ -171,6 +171,34 @@ Same as `get()`, but set method to `PUT`.
 
 Same as `get()`, but set method to `DELETE`.
 
+## Testing
+
+Currently we have two test scripts, `helper.js` and `e2e.js`. `helper.js` is an unit test for `lib/helper.js` while `e2e.js` is an integration test using `lib/soracom.js` to execute real API access. By default `e2e.js` is disabled (it's simply marked as `skip` by mocha).
+
+To run the unit test:
+
+```
+$ npm test
+```
+
+You can also run integration test by modifying the line in `e2e.js`.
+
+```js
+describe.skip('e2e', function() { // remove .skip from this line.
+```
+
+Then add your accout info to `test/account.json`.
+
+```
+$ echo '{"email": "email_address", "password": "password"}' > test/account.json
+```
+
+Finally run the test command, same as unit test.
+
+```
+$ npm test
+```
+
 # License
 
 MIT
