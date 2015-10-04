@@ -92,6 +92,21 @@ Deactivate subscriber.
 soracom.post('/subscribers/:imsi/deactivate', { imsi: '123456789012345' }, function(err, res, body) {});
 ```
 
+Insert tags to subscriber.
+
+**Note** if the type of request body is an array, you cannot pass any other properties (i.e. `imsi`) on the same request. To workaround this, you need to call `soracom.defaults({ imsi: '123456789012345'})` beforehand, or you can just call function with static path `soracom.put('/subscribers/123456789012345/tags')`).
+
+```js
+soracom.defaults({ imsi: '123456789012345' });
+soracom.put('/subscribers/:imsi/tags', [{ tagName: 'foo', tagValue: 'bar'}], function(err, res, body) {});
+```
+
+Delete tag from subscriber.
+
+```js
+soracom.delete('/subscribers/:imsi/tags/:tagName', { imsi: '123456789012345', tagName: 'foo' }, function(err, res, body) {});
+```
+
 ## API
 
 ### `var soracom = new Soracom(obj);`
