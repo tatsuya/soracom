@@ -1,6 +1,6 @@
 {
   "name": "soracom",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "SORACOM API client for Node.js",
   "keywords": [
     "soracom"
