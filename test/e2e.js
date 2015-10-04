@@ -10,7 +10,7 @@ describe.skip('e2e', function() {
   var checkResponseSuccess = function(done) {
     return function(err, res, body) {
       assert.equal(err, null);
-      assert.equal(res.statusCode, 200);
+      assert(200 <= res.statusCode && res.statusCode < 300);
       console.log(body);
       done();
     };
@@ -109,6 +109,29 @@ describe.skip('e2e', function() {
           speedClass: 's1.minimum'
         };
         soracom.post('/subscribers/:imsi/update_speed_class', params, checkResponseSuccess(done));
+      });
+    });
+
+    it('should update subscriber\'s tags', function(done) {
+      auth(function() {
+        soracom.defaults({ imsi: IMSI });
+        var params = [
+          {
+            tagName: 'tag_name_1',
+            tagValue: 'tag_value_1'
+          }
+        ];
+        soracom.put('/subscribers/:imsi/tags', params, checkResponseSuccess(done));
+      });
+    });
+
+    it('should delete subscriber\'s tags', function(done) {
+      auth(function() {
+        var params = {
+          imsi: IMSI,
+          tagName: 'tag_name_1'
+        };
+        soracom.delete('/subscribers/:imsi/tags/:tagName', params, checkResponseSuccess(done));
       });
     });
   });
