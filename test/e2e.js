@@ -4,7 +4,6 @@ var assert = require('assert');
 var Soracom = require('../lib/soracom');
 
 var account = require('./account');
-var IMSI = "PUT_YOUR_IMSI_HERE";
 
 describe.skip('e2e', function() {
   var checkResponseSuccess = function(done) {
@@ -58,81 +57,72 @@ describe.skip('e2e', function() {
 
   describe('subscriber', function() {
     var soracom;
+    var imsi;
 
-    beforeEach(function() {
+    before(function(done) {
       soracom = new Soracom(account);
-    });
 
-    function auth(callback) {
       soracom.post('/auth', function(err, res, body) {
         assert.equal(err, null);
         assert.equal(res.statusCode, 200);
         soracom.defaults(body);
-        callback();
+
+        soracom.get('/subscribers', function(err, res, body) {
+          assert.equal(err, null);
+          assert.equal(res.statusCode, 200);
+          if (!body.length) {
+            throw new Error('Subscriber not found.');
+          }
+          imsi = body[0].imsi;
+          done();
+        });
       });
-    }
+    });
 
     it('should list subscribers', function(done) {
-      auth(function() {
-        soracom.get('/subscribers', checkResponseSuccess(done));
-      });
+      soracom.get('/subscribers', checkResponseSuccess(done));
     });
 
     it('should list subscribers with params', function(done) {
-      auth(function() {
-        soracom.get('/subscribers', { speed_class_filter: 's1.minimum' }, checkResponseSuccess(done));
-      });
+      soracom.get('/subscribers', { speed_class_filter: 's1.minimum' }, checkResponseSuccess(done));
     });
 
     it('should get subscriber', function(done) {
-      auth(function() {
-        soracom.get('/subscribers/:imsi', { imsi: IMSI }, checkResponseSuccess(done));
-      });
+      soracom.get('/subscribers/:imsi', { imsi: imsi }, checkResponseSuccess(done));
     });
 
     it('should activate subscriber', function(done) {
-      auth(function() {
-        soracom.post('/subscribers/:imsi/activate', { imsi: IMSI }, checkResponseSuccess(done));
-      });
+      soracom.post('/subscribers/:imsi/activate', { imsi: imsi }, checkResponseSuccess(done));
     });
 
     it('should deactivate subscriber', function(done) {
-      auth(function() {
-        soracom.post('/subscribers/:imsi/deactivate', { imsi: IMSI }, checkResponseSuccess(done));
-      });
+      soracom.post('/subscribers/:imsi/deactivate', { imsi: imsi }, checkResponseSuccess(done));
     });
 
     it('should update subscriber\'s speed classs', function(done) {
-      auth(function() {
-        var params = {
-          imsi: IMSI,
-          speedClass: 's1.minimum'
-        };
-        soracom.post('/subscribers/:imsi/update_speed_class', params, checkResponseSuccess(done));
-      });
+      var params = {
+        imsi: imsi,
+        speedClass: 's1.minimum'
+      };
+      soracom.post('/subscribers/:imsi/update_speed_class', params, checkResponseSuccess(done));
     });
 
     it('should update subscriber\'s tags', function(done) {
-      auth(function() {
-        soracom.defaults({ imsi: IMSI });
-        var params = [
-          {
-            tagName: 'tag_name_1',
-            tagValue: 'tag_value_1'
-          }
-        ];
-        soracom.put('/subscribers/:imsi/tags', params, checkResponseSuccess(done));
-      });
+      var params = [
+        {
+          tagName: 'tag_name_1',
+          tagValue: 'tag_value_1'
+        }
+      ];
+      soracom.put('/subscribers/' + imsi + '/tags', params, checkResponseSuccess(done));
     });
 
     it('should delete subscriber\'s tags', function(done) {
-      auth(function() {
-        var params = {
-          imsi: IMSI,
-          tagName: 'tag_name_1'
-        };
-        soracom.delete('/subscribers/:imsi/tags/:tagName', params, checkResponseSuccess(done));
-      });
+      var params = {
+        imsi: imsi,
+        tagName: 'tag_name_1'
+      };
+      soracom.delete('/subscribers/:imsi/tags/:tagName', params, checkResponseSuccess(done));
     });
   });
 });
