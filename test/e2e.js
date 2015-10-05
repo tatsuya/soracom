@@ -125,4 +125,39 @@ describe.skip('e2e', function() {
       soracom.delete('/subscribers/:imsi/tags/:tagName', params, checkResponseSuccess(done));
     });
   });
+
+  describe('stats', function() {
+    var soracom;
+    var imsi;
+
+    before(function(done) {
+      soracom = new Soracom(account);
+
+      soracom.post('/auth', function(err, res, body) {
+        assert.equal(err, null);
+        assert.equal(res.statusCode, 200);
+        soracom.defaults(body);
+
+        soracom.get('/subscribers', function(err, res, body) {
+          assert.equal(err, null);
+          assert.equal(res.statusCode, 200);
+          if (!body.length) {
+            throw new Error('Subscriber not found.');
+          }
+          imsi = body[0].imsi;
+          done();
+        });
+      });
+    });
+
+    it('should get air usage report of subscriber', function(done) {
+      var params = {
+        imsi: imsi,
+        from: 1443657600,
+        to: 1446335999,
+        period: 'day'
+      };
+      soracom.get('/stats/air/subscribers/:imsi', params, checkResponseSuccess(done));
+    });
+  });
 });

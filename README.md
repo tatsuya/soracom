@@ -107,6 +107,19 @@ Delete tag from subscriber.
 soracom.delete('/subscribers/:imsi/tags/:tagName', { imsi: '123456789012345', tagName: 'foo' }, function(err, res, body) {});
 ```
 
+### Stats
+
+Get air usage report of subscriber.
+
+```js
+soracom.get('/stats/air/subscribers/:imsi', {
+  imsi: '123456789012345',
+  from: 1443657600,
+  to: 1446335999,
+  period: 'day'
+}, function(err, res, body) {});
+```
+
 ## API
 
 ### `var soracom = new Soracom(obj);`
