@@ -5,7 +5,7 @@ var Soracom = require('../lib/soracom');
 
 var account = require('./account');
 
-describe.skip('e2e', function() {
+describe('e2e', function() {
   var checkResponseSuccess = function(done) {
     return function(err, res, body) {
       assert.equal(err, null);
@@ -158,6 +158,34 @@ describe.skip('e2e', function() {
         period: 'day'
       };
       soracom.get('/stats/air/subscribers/:imsi', params, checkResponseSuccess(done));
+    });
+  });
+
+  describe('groups', function() {
+    // TODO: Fix error: Unrecognized field "password" (class models.Group), not marked as ignorable (8 known properties:...
+    // it('should create group', function(done) {
+    //   var soracom = new Soracom(account);
+    //   soracom.post('/auth', function(err, res, body) {
+    //     assert.equal(err, null);
+    //     assert.equal(res.statusCode, 200);
+    //     soracom.defaults(body);
+    //     var params = {
+    //       tags: {
+    //         location: "tokyo"
+    //       }
+    //     };
+    //     soracom.post('/groups', params, checkResponseSuccess(done));
+    //   });
+    // });
+
+    it('should list groups', function(done) {
+      var soracom = new Soracom(account);
+      soracom.post('/auth', function(err, res, body) {
+        assert.equal(err, null);
+        assert.equal(res.statusCode, 200);
+        soracom.defaults(body);
+        soracom.get('/groups', checkResponseSuccess(done));
+      });
     });
   });
 });
