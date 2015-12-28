@@ -22,7 +22,7 @@ describe('helper', function() {
 
     it('should throw error if required parameter is missing', function() {
       assert.throws(function() {
-        var path = helper.replacePath('/operators/:operator_id', {});
+        helper.replacePath('/operators/:operator_id', {});
       }, Error);
     });
   });

@@ -16,12 +16,15 @@
     "url": "https://github.com/tatsuyaoiw/soracom.git"
   },
   "scripts": {
-    "test": "mocha --reporter spec --timeout 4000"
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "mocha --reporter spec"
   },
   "dependencies": {
     "request": "^2.64.0"
   },
   "devDependencies": {
+    "eslint": "^1.10.3",
     "mocha": "^2.2.5"
   }
 }
